@@ -1,10 +1,14 @@
+import 'package:flutter/material.dart';
+
 enum IconConstants {
-  micrphone('ic_microphone');
+  micrphone('microphone'),
+  app_icon('app_logo');
 
   final String value;
 
   // ignore: sort_constructors_first
   const IconConstants(this.value);
 
-  String get toPng => 'assets/icon/$value.png';
+  String get toPng => 'assets/icon/ic_$value.png';
+  Image get toImage => Image.asset(toPng);
 }
