@@ -1,16 +1,44 @@
-# firebase_news_full_app
+# News App
+*In this project I am developing a simple news application with firebase integration.*
+## What will be add  ❓
 
-A new Flutter project.
+- [x] HomePage UI
+- [x] Splash Screen
+- [x] Login Page Auth
+- [ ] News Details Page
+- [ ] Trend News Page
+- [ ] Latest News Page
+- [ ] Author Profile
+- [ ] Notifications
+- [ ] Bookmark
+- [ ] Profile Page
+- [ ] Onboarding
 
-## Getting Started
+## Libraries I use in the application:
 
-This project is a starting point for a Flutter application.
+**Core**
+easy_localization: https://pub.dev/packages/easy_localization
+flutter_riverpod: https://pub.dev/packages/flutter_riverpod
+kartal: https://pub.dev/packages/kartal
+equatable: https://pub.dev/packages/equatable
 
-A few resources to get you started if this is your first Flutter project:
+ **Firebase**
+firebase_core: https://pub.dev/packages/firebase_core
+cloud_firestore: https://pub.dev/packages/cloud_firestore
+firebase_auth: https://pub.dev/packages/firebase_auth
+firebase_ui_auth: https://pub.dev/packages/firebase_ui_auth
+firebase_ui_oauth_google: https://pub.dev/packages/firebase_ui_oauth_google
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+**Cache**
+shared_preferences: https://pub.dev/packages/shared_preferences
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+
+# ScrenShots
+
+**Splash**
+
+**Login**
+
+**Home**
+
+

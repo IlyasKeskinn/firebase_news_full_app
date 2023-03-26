@@ -1,7 +1,9 @@
-import 'package:firebase_news_full_app/feature/home/home_view.dart';
+import 'package:firebase_news_full_app/feature/auth/authentication_view.dart';
+import 'package:firebase_news_full_app/feature/splash/splash_view.dart';
 import 'package:firebase_news_full_app/product/constants/string_constants.dart';
 import 'package:firebase_news_full_app/product/initialize/app_start_init.dart';
 import 'package:firebase_news_full_app/product/initialize/app_theme.dart';
+import 'package:firebase_ui_auth/firebase_ui_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -19,7 +21,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: StringConstants.appName,
-      home: const HomeView(),
+      home: const SplashView(),
       theme: AppTheme().theme,
     );
   }

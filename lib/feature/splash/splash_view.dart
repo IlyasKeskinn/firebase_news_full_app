@@ -1,4 +1,5 @@
 import 'package:firebase_news_full_app/enums/image_constants.dart';
+import 'package:firebase_news_full_app/feature/auth/authentication_view.dart';
 import 'package:firebase_news_full_app/feature/home/home_view.dart';
 import 'package:firebase_news_full_app/feature/splash/splash_provider.dart';
 import 'package:firebase_news_full_app/product/constants/color_constants.dart';
@@ -35,7 +36,7 @@ class _SplashViewState extends ConsumerState<SplashView> {
       }
       if (next.isRedirectHome != null) {
         if (next.isRedirectHome!) {
-          context.navigateToPage(const HomeView());
+          context.navigateToPage(const AuthenticationView());
         } else {
           //false
         }
