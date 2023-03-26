@@ -1,3 +1,4 @@
+import 'package:firebase_news_full_app/product/constants/color_constants.dart';
 import 'package:flutter/material.dart';
 
 @immutable
@@ -11,6 +12,14 @@ class AppTheme {
             backgroundColor: MaterialStateProperty.all<Color>(Colors.blue),
             foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
           ),
+        ),
+        appBarTheme: const AppBarTheme(
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+          centerTitle: false,
+          foregroundColor: ColorConst.titleActive,
+          titleSpacing: 30,
+          toolbarHeight: 92,
         ),
       );
 }
