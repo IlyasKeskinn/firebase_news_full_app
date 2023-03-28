@@ -1,56 +1,88 @@
 import 'package:firebase_news_full_app/enums/image_constants.dart';
+import 'package:firebase_news_full_app/feature/home/home_provider.dart';
 import 'package:firebase_news_full_app/product/constants/color_constants.dart';
 import 'package:firebase_news_full_app/product/constants/string_constants.dart';
-import 'package:firebase_news_full_app/product/widget/chip/active_chip.dart';
-import 'package:firebase_news_full_app/product/widget/chip/passive_chip.dart';
+import 'package:firebase_news_full_app/product/widget/chip/custom_chip.dart';
 import 'package:firebase_news_full_app/product/widget/news_widget/news_card/news_card.dart';
 import 'package:firebase_news_full_app/product/widget/news_widget/news_tile/news_tile.dart';
 import 'package:firebase_news_full_app/product/widget/text/sub_title_text.dart';
 import 'package:firebase_news_full_app/product/widget/text/title_text.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kartal/kartal.dart';
 
-class HomeView extends StatefulWidget {
+final _homeProvider = StateNotifierProvider<HomeProvider, HomeState>((ref) {
+  return HomeProvider();
+});
+
+class HomeView extends ConsumerStatefulWidget {
   const HomeView({super.key});
 
   @override
-  State<HomeView> createState() => _HomeViewState();
+  ConsumerState<ConsumerStatefulWidget> createState() => _HomeViewState();
 }
 
-class _HomeViewState extends State<HomeView> {
+class _HomeViewState extends ConsumerState<HomeView> {
+  @override
+  void initState() {
+    super.initState();
+    Future.microtask(
+      () => ref.read(_homeProvider.notifier).fetchingLoad(),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Padding(
         padding: context.horizontalPaddingNormal,
-        child: ListView(
+        child: Stack(
           children: [
-            const _LogoArea(),
-            Padding(
-              padding: context.onlyTopPaddingLow,
-              child: const TextField(
-                maxLength: 50,
-                decoration: InputDecoration(
-                  counterText: '',
-                  prefixIcon: Icon(
-                    Icons.search_outlined,
-                    color: ColorConst.titleActive,
-                  ),
-                  suffixIcon: Icon(
-                    Icons.filter_list_outlined,
-                    color: ColorConst.titleActive,
-                  ),
-                  border: OutlineInputBorder(),
-                  hintText: StringConstants.homeSearch,
+            ListView(
+              children: const [
+                _LogoArea(),
+                _SearchTextField(),
+                _TrendHeader(),
+                _TrendNews(),
+                _LatestHeader(),
+                _TagListView(),
+                _LatestListView()
+              ],
+            ),
+            if (ref.watch(_homeProvider).isLoading ?? false)
+              const Center(
+                child: CircularProgressIndicator(
+                  color: Colors.amber,
                 ),
               ),
-            ),
-            const _TrendHeader(),
-            const _TrendNews(),
-            const _LatestHeader(),
-            const _TagListView(),
-            const _LatestListView()
           ],
+        ),
+      ),
+    );
+  }
+}
+
+class _SearchTextField extends StatelessWidget {
+  const _SearchTextField();
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: context.onlyTopPaddingLow,
+      child: const TextField(
+        maxLength: 50,
+        decoration: InputDecoration(
+          counterText: '',
+          prefixIcon: Icon(
+            Icons.search_outlined,
+            color: ColorConst.titleActive,
+          ),
+          suffixIcon: Icon(
+            Icons.filter_list_outlined,
+            color: ColorConst.titleActive,
+          ),
+          border: OutlineInputBorder(),
+          hintText: StringConstants.homeSearch,
         ),
       ),
     );
@@ -100,16 +132,28 @@ class _TrendHeader extends StatelessWidget {
   }
 }
 
-class _TrendNews extends StatelessWidget {
+class _TrendNews extends ConsumerWidget {
   const _TrendNews();
-  final String dummyShipImage =
-      'https://firebasestorage.googleapis.com/v0/b/news-app-e4ef6.appspot.com/o/news_ship.png?alt=media&token=c1d44a9c-cc84-407d-884c-39ad197670a5';
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final newsItem = ref.watch(_homeProvider).news;
     return Padding(
       padding: context.onlyTopPaddingNormal,
-      child: NewsCard(image: dummyShipImage),
+      child: SizedBox(
+        height: context.dynamicHeight(0.4),
+        width: 400,
+        child: ListView.builder(
+          physics: const ClampingScrollPhysics(),
+          scrollDirection: Axis.horizontal,
+          itemCount: newsItem?.length ?? 0,
+          itemBuilder: (context, index) {
+            return NewsCard(
+              news: newsItem?[index],
+            );
+          },
+        ),
+      ),
     );
   }
 }
@@ -132,50 +176,46 @@ class _LatestHeader extends StatelessWidget {
   }
 }
 
-class _TagListView extends StatelessWidget {
+class _TagListView extends ConsumerWidget {
   const _TagListView();
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final categoryItems = ref.watch(_homeProvider).category;
     return SizedBox(
       height: 50,
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
-        itemCount: 4,
+        itemCount: categoryItems?.length ?? 0,
         itemBuilder: (BuildContext context, int index) {
-          if (index == 0) {
-            return Padding(
-              padding: context.onlyRightPaddingLow,
-              child: const ActiveChip(text: 'All'),
-            );
-          } else {
-            return Padding(
-              padding: context.onlyRightPaddingLow,
-              child: const PassiveChip(text: 'Sports'),
-            );
-          }
+          return Padding(
+            padding: context.onlyRightPaddingLow,
+            child: CustomChip(
+              categoryItems: categoryItems?[index],
+            ),
+          );
         },
       ),
     );
   }
 }
 
-class _LatestListView extends StatelessWidget {
+class _LatestListView extends ConsumerWidget {
   const _LatestListView();
-  final String dummyImage =
-      'https://firebasestorage.googleapis.com/v0/b/news-app-e4ef6.appspot.com/o/news_wed.png?alt=media&token=9fea0584-9488-4eeb-a1c7-256645ed8840';
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final latestNewsItem = ref.watch(_homeProvider).news;
     return SizedBox(
-      height: context.dynamicHeight(0.4),
+      height: context.dynamicHeight(0.6),
       child: ListView.builder(
+        shrinkWrap: true,
         physics: const ClampingScrollPhysics(),
-        itemCount: 5,
+        itemCount: latestNewsItem?.length ?? 0,
         itemBuilder: (context, index) {
           return Padding(
             padding: context.onlyTopPaddingNormal,
-            child: NewsTile(image: dummyImage),
+            child: NewsTile(latestNewsItem: latestNewsItem?[index]),
           );
         },
       ),

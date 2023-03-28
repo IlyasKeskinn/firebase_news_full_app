@@ -1,3 +1,4 @@
+import 'package:firebase_news_full_app/product/models/news.dart';
 import 'package:firebase_news_full_app/product/widget/news_widget/news_footer/news_footer.dart';
 import 'package:firebase_news_full_app/product/widget/text/heading_text.dart';
 import 'package:firebase_news_full_app/product/widget/text/sub_title_text.dart';
@@ -5,8 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:kartal/kartal.dart';
 
 class NewsTile extends StatelessWidget {
-  const NewsTile({super.key, required this.image});
-  final String image;
+  const NewsTile({super.key, this.latestNewsItem});
+  final News? latestNewsItem;
 
   @override
   Widget build(BuildContext context) {
@@ -15,13 +16,18 @@ class NewsTile extends StatelessWidget {
       child: Row(
         children: [
           SizedBox(
-            height: 112,
-            width: 112,
+            height: 92,
+            width: 92,
             child: Card(
+              clipBehavior: Clip.antiAlias,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(24),
+              ),
               margin: EdgeInsets.zero,
               semanticContainer: false,
               child: Image.network(
-                image,
+                //fix
+                latestNewsItem!.backgroundImage ?? '',
                 fit: BoxFit.cover,
               ),
             ),
@@ -32,16 +38,18 @@ class NewsTile extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const SubTitleText(value: 'Travel'),
+                  //fix
+                  SubTitleText(value: latestNewsItem!.category ?? ''),
                   Padding(
                     padding: context.onlyTopPaddingLow,
-                    child: const HeadingText(
-                      value:
-                          'Her train broke down. Her phone died. And then she met her...',
+                    child: HeadingText(
+                      //fix
+                      value: latestNewsItem!.title ?? '',
                     ),
                   ),
-                  const NewsFooter(
-                    authorName: 'CNN',
+                  NewsFooter(
+                    //fix
+                    authorName: latestNewsItem!.author ?? '',
                     releaseTime: '53m ago',
                   )
                 ],

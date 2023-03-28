@@ -41,7 +41,7 @@ class _AuthenticationViewState extends ConsumerState<AuthenticationView> {
           AuthStateChangeAction<SignedIn>((context, state) {
             checkUser(state.user);
             if (ref.watch(authenticationProvider).isRedirect ?? false) {
-              context.navigateToPage(const HomeView());
+              context.navigateToPage(HomeView());
             }
           }),
         ],

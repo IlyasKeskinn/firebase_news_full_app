@@ -8,6 +8,7 @@ class News extends Equatable with IDModel, BaseFirebaseModel<News> {
     this.title,
     this.backgroundImage,
     this.id,
+    this.author,
   });
 
   final String? category;
@@ -16,9 +17,11 @@ class News extends Equatable with IDModel, BaseFirebaseModel<News> {
   final String? backgroundImage;
   @override
   final String? id;
+  final String? author;
 
   @override
-  List<Object?> get props => [category, categoryId, title, backgroundImage, id];
+  List<Object?> get props =>
+      [category, categoryId, title, backgroundImage, id, author];
 
   News copyWith({
     String? category,
@@ -26,12 +29,14 @@ class News extends Equatable with IDModel, BaseFirebaseModel<News> {
     String? title,
     String? backgroundImage,
     String? id,
+    String? author,
   }) {
     return News(
       category: category ?? this.category,
       categoryId: categoryId ?? this.categoryId,
       title: title ?? this.title,
       backgroundImage: backgroundImage ?? this.backgroundImage,
+      author: author ?? this.author,
     );
   }
 
@@ -41,7 +46,8 @@ class News extends Equatable with IDModel, BaseFirebaseModel<News> {
       'categoryId': categoryId,
       'title': title,
       'backgroundImage': backgroundImage,
-      'id': id
+      'id': id,
+      'author': author,
     };
   }
 
@@ -53,6 +59,7 @@ class News extends Equatable with IDModel, BaseFirebaseModel<News> {
       title: json['title'] as String?,
       backgroundImage: json['backgroundImage'] as String?,
       id: json['id'] as String?,
+      author: json['author'] as String?,
     );
   }
 }
