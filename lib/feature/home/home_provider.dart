@@ -9,6 +9,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 class HomeProvider extends StateNotifier<HomeState> {
   HomeProvider() : super(const HomeState());
 
+  List<News> _NewsList = [];
+
+  List<News> get NewsList => _NewsList;
+
   Future<void> fetchNews() async {
     final newsReference = FirebaseCollection.news.reference;
     final response = await newsReference
@@ -27,6 +31,7 @@ class HomeProvider extends StateNotifier<HomeState> {
     if (response.docs.isNotEmpty) {
       final values = response.docs.map((e) => e.data()).toList();
       state = state.copyWith(news: values);
+      _NewsList = values;
     }
   }
 

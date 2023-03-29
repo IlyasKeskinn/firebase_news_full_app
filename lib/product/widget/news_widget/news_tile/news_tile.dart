@@ -6,8 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:kartal/kartal.dart';
 
 class NewsTile extends StatelessWidget {
-  const NewsTile({super.key, this.latestNewsItem});
-  final News? latestNewsItem;
+  const NewsTile({super.key, this.newsItem});
+  final News? newsItem;
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +27,7 @@ class NewsTile extends StatelessWidget {
               semanticContainer: false,
               child: Image.network(
                 //fix
-                latestNewsItem!.backgroundImage ?? '',
+                newsItem!.backgroundImage ?? '',
                 fit: BoxFit.cover,
               ),
             ),
@@ -39,17 +39,17 @@ class NewsTile extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   //fix
-                  SubTitleText(value: latestNewsItem!.category ?? ''),
+                  SubTitleText(value: newsItem!.category ?? ''),
                   Padding(
                     padding: context.onlyTopPaddingLow,
                     child: HeadingText(
                       //fix
-                      value: latestNewsItem!.title ?? '',
+                      value: newsItem!.title ?? '',
                     ),
                   ),
                   NewsFooter(
                     //fix
-                    authorName: latestNewsItem!.author ?? '',
+                    authorName: newsItem!.author ?? '',
                     releaseTime: '53m ago',
                   )
                 ],

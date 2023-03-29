@@ -1,5 +1,6 @@
 import 'package:firebase_news_full_app/enums/image_constants.dart';
 import 'package:firebase_news_full_app/feature/home/home_provider.dart';
+import 'package:firebase_news_full_app/feature/home/sub_view.dart/home_search_delegate.dart';
 import 'package:firebase_news_full_app/product/constants/color_constants.dart';
 import 'package:firebase_news_full_app/product/constants/string_constants.dart';
 import 'package:firebase_news_full_app/product/widget/chip/custom_chip.dart';
@@ -62,16 +63,24 @@ class _HomeViewState extends ConsumerState<HomeView> {
   }
 }
 
-class _SearchTextField extends StatelessWidget {
+class _SearchTextField extends ConsumerWidget {
   const _SearchTextField();
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Padding(
       padding: context.onlyTopPaddingLow,
-      child: const TextField(
+      child: TextField(
+        onTap: () {
+          showSearch(
+            context: context,
+            delegate: HomeSearchDelegate(
+              ref.watch(_homeProvider.notifier).NewsList,
+            ),
+          );
+        },
         maxLength: 50,
-        decoration: InputDecoration(
+        decoration: const InputDecoration(
           counterText: '',
           prefixIcon: Icon(
             Icons.search_outlined,
@@ -215,7 +224,7 @@ class _LatestListView extends ConsumerWidget {
         itemBuilder: (context, index) {
           return Padding(
             padding: context.onlyTopPaddingNormal,
-            child: NewsTile(latestNewsItem: latestNewsItem?[index]),
+            child: NewsTile(newsItem: latestNewsItem?[index]),
           );
         },
       ),
