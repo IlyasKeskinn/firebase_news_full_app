@@ -1,4 +1,5 @@
 import 'package:firebase_news_full_app/enums/image_constants.dart';
+import 'package:firebase_news_full_app/feature/add_news/add_news_view.dart';
 import 'package:firebase_news_full_app/feature/home/home_provider.dart';
 import 'package:firebase_news_full_app/feature/home/sub_view.dart/home_search_delegate.dart';
 import 'package:firebase_news_full_app/product/constants/color_constants.dart';
@@ -59,6 +60,12 @@ class _HomeViewState extends ConsumerState<HomeView> {
           ],
         ),
       ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          context.navigateToPage(const AddNewsView(), type: SlideType.LEFT);
+        },
+        child: const Icon(Icons.add),
+      ),
     );
   }
 }
@@ -75,7 +82,7 @@ class _SearchTextField extends ConsumerWidget {
           showSearch(
             context: context,
             delegate: HomeSearchDelegate(
-              ref.watch(_homeProvider.notifier).NewsList,
+              ref.watch(_homeProvider.notifier).newsList,
             ),
           );
         },
@@ -90,7 +97,6 @@ class _SearchTextField extends ConsumerWidget {
             Icons.filter_list_outlined,
             color: ColorConst.titleActive,
           ),
-          border: OutlineInputBorder(),
           hintText: StringConstants.homeSearch,
         ),
       ),

@@ -15,4 +15,9 @@ class StringConstants {
   static const String homeLatest = 'Latest';
   static const String homeSeeAll = 'See all';
   static const String homeSearch = 'Search';
+
+  //Add News
+  static const String addNewsAppbar = 'Add News';
+  static const String addNewsSelectCategory = 'Please select category';
+  static const String addNewsEnterTitle = 'Enter news title';
 }

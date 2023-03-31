@@ -21,5 +21,10 @@ class AppTheme {
           titleSpacing: 30,
           toolbarHeight: 92,
         ),
+        inputDecorationTheme: const InputDecorationTheme(
+          border: OutlineInputBorder(),
+          contentPadding: EdgeInsets.all(18),
+          
+        ),
       );
 }

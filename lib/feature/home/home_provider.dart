@@ -2,60 +2,30 @@
 import 'package:equatable/equatable.dart';
 import 'package:firebase_news_full_app/product/models/category.dart';
 import 'package:firebase_news_full_app/product/models/news.dart';
-import 'package:firebase_news_full_app/product/utility/exception/custom_exception.dart';
 import 'package:firebase_news_full_app/product/utility/firebase/firebase_collection.dart';
+import 'package:firebase_news_full_app/product/utility/firebase/firebase_utility.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class HomeProvider extends StateNotifier<HomeState> {
+class HomeProvider extends StateNotifier<HomeState> with FirebaseUtilty {
   HomeProvider() : super(const HomeState());
 
-  List<News> _NewsList = [];
+  List<News> _newsList = [];
 
-  List<News> get NewsList => _NewsList;
+  List<News> get newsList => _newsList;
 
   Future<void> fetchNews() async {
-    final newsReference = FirebaseCollection.news.reference;
-    final response = await newsReference
-        .withConverter(
-          fromFirestore: (snapshot, options) => News().fromFirebase(snapshot),
-          toFirestore: (value, options) {
-            if (value == null) {
-              throw FirebaseCustomException('$value not null!');
-            } else {
-              return value.toJson();
-            }
-          },
-        )
-        .get();
-
-    if (response.docs.isNotEmpty) {
-      final values = response.docs.map((e) => e.data()).toList();
-      state = state.copyWith(news: values);
-      _NewsList = values;
-    }
+    final response =
+        await fetchList<News, News>(News(), FirebaseCollection.news);
+    state = state.copyWith(news: response);
+    _newsList = response!.toList();
   }
 
   Future<void> fetchCategory() async {
-    final categoryReference =
-        FirebaseCollection.category.reference.orderBy('name');
-    final response = await categoryReference
-        .withConverter(
-          fromFirestore: (snapshot, options) =>
-              Category().fromFirebase(snapshot),
-          toFirestore: (value, options) {
-            if (value == null) {
-              throw FirebaseCustomException('$value not null!');
-            } else {
-              return value.toJson();
-            }
-          },
-        )
-        .get();
-
-    if (response.docs.isNotEmpty) {
-      final values = response.docs.map((e) => e.data()).toList();
-      state = state.copyWith(category: values);
-    }
+    final response = await fetchList<Category, Category>(
+      Category(),
+      FirebaseCollection.category,
+    );
+    state = state.copyWith(category: response);
   }
 
   Future<void> fetchingLoad() async {
