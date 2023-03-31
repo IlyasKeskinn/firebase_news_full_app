@@ -20,4 +20,10 @@ class StringConstants {
   static const String addNewsAppbar = 'Add News';
   static const String addNewsSelectCategory = 'Please select category';
   static const String addNewsEnterTitle = 'Enter news title';
+  static const String addNewsPublish = 'Publsih';
+
+  //Validate Forms
+    static const String validateTitle = 'Please enter title';
+    static const String validateCategory = 'Please select a category';
+
 }

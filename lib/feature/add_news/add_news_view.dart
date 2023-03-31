@@ -21,6 +21,12 @@ class _AddNewsViewState extends State<AddNewsView> {
     _fetchInitialCategory();
   }
 
+  @override
+  void dispose() {
+    _addNewLogic.dispose();
+    super.dispose();
+  }
+
   Future<void> _fetchInitialCategory() async {
     await _addNewLogic.fetchCategory();
     setState(() {});
@@ -33,6 +39,13 @@ class _AddNewsViewState extends State<AddNewsView> {
         title: const Text(StringConstants.addNewsAppbar),
       ),
       body: Form(
+        key: _addNewLogic.formKey,
+        onChanged: () {
+          _addNewLogic.chechkValidate((value) {
+            setState(() {});
+          });
+        },
+        autovalidateMode: AutovalidateMode.always,
         child: Padding(
           padding: context.paddingNormal,
           child: ListView(
@@ -44,6 +57,12 @@ class _AddNewsViewState extends State<AddNewsView> {
               }),
               const EmptySizedBoxLow(),
               TextFormField(
+                validator: (value) {
+                  if (value.isNullOrEmpty) {
+                    return StringConstants.validateTitle;
+                  }
+                  return null;
+                },
                 decoration: const InputDecoration(
                   prefixIcon: Icon(Icons.title_outlined),
                   hintText: StringConstants.addNewsEnterTitle,
@@ -52,7 +71,11 @@ class _AddNewsViewState extends State<AddNewsView> {
               const EmptySizedBoxLow(),
               InkWell(
                 onTap: () async {
-                  await _addNewLogic.pickImage();
+                  await _addNewLogic.pickImageAndValidate(
+                    (value) {
+                      setState(() {});
+                    },
+                  );
                   setState(() {});
                 },
                 child: SizedBox(
@@ -71,6 +94,15 @@ class _AddNewsViewState extends State<AddNewsView> {
                   ),
                 ),
               ),
+              const EmptySizedBoxLow(),
+              ElevatedButton.icon(
+                onPressed: !_addNewLogic.isValidateForm ? null : () {},
+                label: const Text(StringConstants.addNewsPublish),
+                icon: const Icon(Icons.send_outlined),
+                style: ElevatedButton.styleFrom(
+                  elevation: 20,
+                ),
+              )
             ],
           ),
         ),
@@ -104,6 +136,12 @@ class _CategoryDropDown extends StatelessWidget {
         borderRadius: context.lowBorderRadius,
       ),
       child: DropdownButtonFormField<Category>(
+        validator: (value) {
+          if (value == null) {
+            return StringConstants.validateCategory;
+          }
+          return null;
+        },
         decoration: const InputDecoration(
           prefixIcon: Icon(Icons.category_outlined),
         ),
