@@ -1,8 +1,7 @@
+import 'package:firebase_news_full_app/feature/add_news/add_news_logic.dart';
 import 'package:firebase_news_full_app/product/constants/color_constants.dart';
 import 'package:firebase_news_full_app/product/constants/string_constants.dart';
 import 'package:firebase_news_full_app/product/models/category.dart';
-import 'package:firebase_news_full_app/product/utility/firebase/firebase_collection.dart';
-import 'package:firebase_news_full_app/product/utility/firebase/firebase_utility.dart';
 import 'package:flutter/material.dart';
 import 'package:kartal/kartal.dart';
 
@@ -13,24 +12,18 @@ class AddNewsView extends StatefulWidget {
   State<AddNewsView> createState() => _AddNewsViewState();
 }
 
-class _AddNewsViewState extends State<AddNewsView> with FirebaseUtilty {
-  List<Category> _category = [];
-  late final Category? _selectedCategory;
-
+class _AddNewsViewState extends State<AddNewsView> {
+  late final AddNewLogic _addNewLogic;
   @override
   void initState() {
     super.initState();
-    fetchCategory();
+    _addNewLogic = AddNewLogic();
+    _fetchInitialCategory();
   }
 
-  Future<void> fetchCategory() async {
-    final response = await fetchList<Category, Category>(
-      Category(),
-      FirebaseCollection.category,
-    );
-    setState(() {
-      _category = response ?? [];
-    });
+  Future<void> _fetchInitialCategory() async {
+    await _addNewLogic.fetchCategory();
+    setState(() {});
   }
 
   @override
@@ -44,29 +37,11 @@ class _AddNewsViewState extends State<AddNewsView> with FirebaseUtilty {
           padding: context.paddingNormal,
           child: ListView(
             children: [
-              DecoratedBox(
-                decoration: BoxDecoration(
-                  color: ColorConst.white,
-                  border: Border.all(color: ColorConst.grayScale),
-                  borderRadius: context.lowBorderRadius,
-                ),
-                child: DropdownButtonFormField<Category>(
-                  decoration: const InputDecoration(
-                    prefixIcon: Icon(Icons.category_outlined),
-                  ),
-                  style: context.textTheme.bodyLarge,
-                  items: _category.map((items) {
-                    return DropdownMenuItem<Category>(
-                      value: items,
-                      child: Text(items.name ?? ''),
-                    );
-                  }).toList(),
-                  hint: const Text(StringConstants.addNewsSelectCategory),
-                  onChanged: (value) {
-                    _selectedCategory = value;
-                  },
-                ),
-              ),
+              _CategoryDropDown(_addNewLogic.categories, (value) {
+                setState(() {
+                  _addNewLogic.updateCategory(value);
+                });
+              }),
               const EmptySizedBoxLow(),
               TextFormField(
                 decoration: const InputDecoration(
@@ -76,7 +51,10 @@ class _AddNewsViewState extends State<AddNewsView> with FirebaseUtilty {
               ),
               const EmptySizedBoxLow(),
               InkWell(
-                onTap: () {},
+                onTap: () async {
+                  await _addNewLogic.pickImage();
+                  setState(() {});
+                },
                 child: SizedBox(
                   height: context.dynamicHeight(0.2),
                   child: DecoratedBox(
@@ -84,7 +62,12 @@ class _AddNewsViewState extends State<AddNewsView> with FirebaseUtilty {
                       border: Border.all(color: ColorConst.grayScale),
                       borderRadius: context.lowBorderRadius,
                     ),
-                    child: const Icon(Icons.photo_camera_outlined),
+                    child: _addNewLogic.selectedFileBytes != null
+                        ? Image.memory(
+                            _addNewLogic.selectedFileBytes!,
+                            fit: BoxFit.cover,
+                          )
+                        : const Icon(Icons.photo_camera_outlined),
                   ),
                 ),
               ),
@@ -104,5 +87,39 @@ class EmptySizedBoxLow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(child: context.emptySizedHeightBoxLow3x);
+  }
+}
+
+class _CategoryDropDown extends StatelessWidget {
+  const _CategoryDropDown(this.categories, this.onselected);
+  final List<Category> categories;
+  final ValueSetter<Category> onselected;
+
+  @override
+  Widget build(BuildContext context) {
+    return DecoratedBox(
+      decoration: BoxDecoration(
+        color: ColorConst.white,
+        border: Border.all(color: ColorConst.grayScale),
+        borderRadius: context.lowBorderRadius,
+      ),
+      child: DropdownButtonFormField<Category>(
+        decoration: const InputDecoration(
+          prefixIcon: Icon(Icons.category_outlined),
+        ),
+        style: context.textTheme.bodyLarge,
+        items: categories.map((items) {
+          return DropdownMenuItem<Category>(
+            value: items,
+            child: Text(items.name.toCapitalized()),
+          );
+        }).toList(),
+        hint: const Text(StringConstants.addNewsSelectCategory),
+        onChanged: (value) {
+          if (value == null) return;
+          onselected.call(value);
+        },
+      ),
+    );
   }
 }
