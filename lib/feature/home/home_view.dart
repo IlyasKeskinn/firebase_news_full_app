@@ -61,8 +61,12 @@ class _HomeViewState extends ConsumerState<HomeView> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          context.navigateToPage(const AddNewsView(), type: SlideType.LEFT);
+        onPressed: () async {
+          final response = await context
+              .navigateToPage<bool>(const AddNewsView(), type: SlideType.LEFT);
+          if (response ?? false) {
+            await ref.read(_homeProvider.notifier).fetchingLoad();
+          }
         },
         child: const Icon(Icons.add),
       ),
@@ -163,8 +167,11 @@ class _TrendNews extends ConsumerWidget {
           scrollDirection: Axis.horizontal,
           itemCount: newsItem?.length ?? 0,
           itemBuilder: (context, index) {
-            return NewsCard(
-              news: newsItem?[index],
+            return Padding(
+              padding: context.onlyRightPaddingNormal,
+              child: NewsCard(
+                news: newsItem?[index],
+              ),
             );
           },
         ),

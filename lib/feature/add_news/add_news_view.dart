@@ -45,7 +45,7 @@ class _AddNewsViewState extends State<AddNewsView> {
             setState(() {});
           });
         },
-        autovalidateMode: AutovalidateMode.always,
+        autovalidateMode: AutovalidateMode.onUserInteraction,
         child: Padding(
           padding: context.paddingNormal,
           child: ListView(
@@ -57,6 +57,21 @@ class _AddNewsViewState extends State<AddNewsView> {
               }),
               const EmptySizedBoxLow(),
               TextFormField(
+                controller: _addNewLogic.authorController,
+                validator: (value) {
+                  if (value.isNullOrEmpty) {
+                    return StringConstants.validateTitle;
+                  }
+                  return null;
+                },
+                decoration: const InputDecoration(
+                  prefixIcon: Icon(Icons.person_outline),
+                  hintText: 'Author',
+                ),
+              ),
+              const EmptySizedBoxLow(),
+              TextFormField(
+                controller: _addNewLogic.titleController,
                 validator: (value) {
                   if (value.isNullOrEmpty) {
                     return StringConstants.validateTitle;
@@ -96,7 +111,16 @@ class _AddNewsViewState extends State<AddNewsView> {
               ),
               const EmptySizedBoxLow(),
               ElevatedButton.icon(
-                onPressed: !_addNewLogic.isValidateForm ? null : () {},
+                onPressed: !_addNewLogic.isValidateForm
+                    ? null
+                    : () async {
+                        final response =
+                            await _addNewLogic.addNewsToFirebaseCollection();
+                        if (!mounted) {
+                          return;
+                        }
+                        await context.pop<bool>(response);
+                      },
                 label: const Text(StringConstants.addNewsPublish),
                 icon: const Icon(Icons.send_outlined),
                 style: ElevatedButton.styleFrom(
