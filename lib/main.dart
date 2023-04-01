@@ -1,4 +1,5 @@
-import 'package:firebase_news_full_app/feature/home/home_view.dart';
+import 'package:firebase_news_full_app/feature/profile/profile_view.dart';
+import 'package:firebase_news_full_app/feature/splash/splash_view.dart';
 import 'package:firebase_news_full_app/product/constants/string_constants.dart';
 import 'package:firebase_news_full_app/product/initialize/app_start_init.dart';
 import 'package:firebase_news_full_app/product/initialize/app_theme.dart';
@@ -19,7 +20,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: StringConstants.appName,
-      home: HomeView(),
+      home: const SplashView(),
       theme: AppTheme().theme,
     );
   }

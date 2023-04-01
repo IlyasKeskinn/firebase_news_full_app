@@ -1,4 +1,4 @@
-import 'package:firebase_news_full_app/enums/image_constants.dart';
+import 'package:firebase_news_full_app/enums/icon_constants.dart';
 import 'package:firebase_news_full_app/feature/auth/authentication_view.dart';
 import 'package:firebase_news_full_app/feature/home/home_view.dart';
 import 'package:firebase_news_full_app/feature/splash/splash_provider.dart';

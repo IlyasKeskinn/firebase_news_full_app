@@ -1,4 +1,5 @@
-import 'package:firebase_news_full_app/enums/image_constants.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_news_full_app/enums/icon_constants.dart';
 import 'package:firebase_news_full_app/feature/add_news/add_news_view.dart';
 import 'package:firebase_news_full_app/feature/home/home_provider.dart';
 import 'package:firebase_news_full_app/feature/home/sub_view.dart/home_search_delegate.dart';
@@ -33,6 +34,10 @@ class _HomeViewState extends ConsumerState<HomeView> {
     );
   }
 
+  Future<void> logOut() async {
+    await FirebaseAuth.instance.signOut();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -48,7 +53,7 @@ class _HomeViewState extends ConsumerState<HomeView> {
                 _TrendNews(),
                 _LatestHeader(),
                 _TagListView(),
-                _LatestListView()
+                _LatestListView(),
               ],
             ),
             if (ref.watch(_homeProvider).isLoading ?? false)
@@ -70,6 +75,7 @@ class _HomeViewState extends ConsumerState<HomeView> {
         },
         child: const Icon(Icons.add),
       ),
+      bottomNavigationBar: const _NavigationBar(),
     );
   }
 }
@@ -186,7 +192,7 @@ class _LatestHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: context.onlyTopPaddingNormal,
+      padding: context.onlyTopPaddingLow,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: const [
@@ -241,6 +247,35 @@ class _LatestListView extends ConsumerWidget {
           );
         },
       ),
+    );
+  }
+}
+
+class _NavigationBar extends StatelessWidget {
+  const _NavigationBar();
+
+  @override
+  Widget build(BuildContext context) {
+    return BottomNavigationBar(
+      selectedItemColor: ColorConst.primary,
+      type: BottomNavigationBarType.fixed,
+      items: const [
+        BottomNavigationBarItem(
+            icon: Icon(Icons.home_outlined),
+            label: StringConstants.bottomnavigationbar_home),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.navigation_outlined),
+          label: StringConstants.bottomnavigationbar_explore,
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.bookmark_outline),
+          label: StringConstants.bottomnavigationbar_bookmark,
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.person_outlined),
+          label: StringConstants.bottomnavigationbar_profile,
+        ),
+      ],
     );
   }
 }

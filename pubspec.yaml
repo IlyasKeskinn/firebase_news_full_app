@@ -49,7 +49,7 @@ dependencies:
   firebase_auth: ^4.3.0
   firebase_ui_auth: ^1.1.17
   firebase_ui_oauth_google: ^1.0.24
-  firebase_ui_oauth_facebook: ^1.0.24
+  google_sign_in: ^6.0.2
   firebase_storage: ^11.1.0
 
   #UI
@@ -85,6 +85,7 @@ flutter:
   uses-material-design: true
   assets:
     - assets/icon/
+    - assets/image/
 
   #   - images/a_dot_ham.jpeg
 

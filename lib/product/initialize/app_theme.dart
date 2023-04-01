@@ -16,10 +16,9 @@ class AppTheme {
         appBarTheme: const AppBarTheme(
           backgroundColor: Colors.transparent,
           elevation: 0,
-          centerTitle: false,
+          centerTitle: true,
           foregroundColor: ColorConst.titleActive,
-          titleSpacing: 30,
-          toolbarHeight: 92,
+          toolbarHeight: 56,
         ),
         inputDecorationTheme: const InputDecorationTheme(
           border: OutlineInputBorder(),

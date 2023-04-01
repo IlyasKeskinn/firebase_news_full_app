@@ -3,8 +3,11 @@ import 'package:firebase_news_full_app/product/widget/news_widget/news_footer/ne
 import 'package:flutter/material.dart';
 
 class NewsFooter extends StatelessWidget {
-  const NewsFooter(
-      {super.key, required this.authorName, required this.releaseTime});
+  const NewsFooter({
+    super.key,
+    required this.authorName,
+    required this.releaseTime,
+  });
   final String authorName;
   final String releaseTime;
 

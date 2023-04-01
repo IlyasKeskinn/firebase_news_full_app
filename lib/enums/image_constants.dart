@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
 
-enum IconConstants {
-  micrphone('microphone'),
-  app_icon('app_logo'),
-  author_icon('bbc');
+enum ImageConstants {
+  avatar('avatar'),
+  avatarPhoto('avatarPhoto');
 
   final String value;
 
   // ignore: sort_constructors_first
-  const IconConstants(this.value);
+  const ImageConstants(this.value);
 
-  String get toPng => 'assets/icon/ic_$value.png';
-  Image get toImage => Image.asset(toPng);
+  String get toJpg => 'assets/image/img_$value.jpg';
+  Image get toImage => Image.asset(toJpg);
 }

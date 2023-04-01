@@ -3,13 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:kartal/kartal.dart';
 
 class HeadingText extends StatelessWidget {
-  const HeadingText({super.key, required this.value});
+  const HeadingText({super.key, required this.value, this.maxLines});
   final String value;
+  final int? maxLines;
 
   @override
   Widget build(BuildContext context) {
     return Text(
-      maxLines: 2,
+      maxLines: maxLines ?? 1,
       softWrap: true,
       overflow: TextOverflow.ellipsis,
       textWidthBasis: TextWidthBasis.longestLine,
