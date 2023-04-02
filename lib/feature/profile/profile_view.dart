@@ -1,5 +1,6 @@
 import 'package:firebase_news_full_app/enums/image_constants.dart';
 import 'package:firebase_news_full_app/feature/home/home_provider.dart';
+import 'package:firebase_news_full_app/feature/profile/sub_view/settings/settings_view.dart';
 import 'package:firebase_news_full_app/product/constants/string_constants.dart';
 import 'package:firebase_news_full_app/product/widget/news_widget/news_tile/news_tile.dart';
 import 'package:firebase_news_full_app/product/widget/text/heading_text.dart';
@@ -12,14 +13,14 @@ final _homeProvider = StateNotifierProvider<HomeProvider, HomeState>((ref) {
   return HomeProvider();
 });
 
-class Profile_View extends ConsumerStatefulWidget {
-  const Profile_View({super.key});
+class ProfileView extends ConsumerStatefulWidget {
+  const ProfileView({super.key});
 
   @override
-  ConsumerState<ConsumerStatefulWidget> createState() => _Profile_ViewState();
+  ConsumerState<ConsumerStatefulWidget> createState() => _ProfileViewState();
 }
 
-class _Profile_ViewState extends ConsumerState<Profile_View> {
+class _ProfileViewState extends ConsumerState<ProfileView> {
   @override
   void initState() {
     super.initState();
@@ -35,7 +36,9 @@ class _Profile_ViewState extends ConsumerState<Profile_View> {
         title: const HeadingText(value: StringConstants.profile),
         actions: [
           IconButton(
-            onPressed: () {},
+            onPressed: () {
+              context.navigateToPage(const SettingsView());
+            },
             icon: const Icon(Icons.settings_outlined),
           )
         ],

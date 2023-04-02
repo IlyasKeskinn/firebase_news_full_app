@@ -1,8 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_news_full_app/enums/icon_constants.dart';
 import 'package:firebase_news_full_app/feature/add_news/add_news_view.dart';
+import 'package:firebase_news_full_app/feature/bookmarkPage/bookmark_view.dart';
+import 'package:firebase_news_full_app/feature/explore/explore_view.dart';
 import 'package:firebase_news_full_app/feature/home/home_provider.dart';
 import 'package:firebase_news_full_app/feature/home/sub_view.dart/home_search_delegate.dart';
+import 'package:firebase_news_full_app/feature/profile/profile_view.dart';
 import 'package:firebase_news_full_app/product/constants/color_constants.dart';
 import 'package:firebase_news_full_app/product/constants/string_constants.dart';
 import 'package:firebase_news_full_app/product/widget/chip/custom_chip.dart';
@@ -37,6 +40,14 @@ class _HomeViewState extends ConsumerState<HomeView> {
   Future<void> logOut() async {
     await FirebaseAuth.instance.signOut();
   }
+
+  final int _selectedIndex = 0;
+  final List<Widget> _screens = [
+    const HomeView(),
+    const ExploreView(),
+    const BookmarkView(),
+    const ProfileView(),
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -251,18 +262,47 @@ class _LatestListView extends ConsumerWidget {
   }
 }
 
-class _NavigationBar extends StatelessWidget {
+class _NavigationBar extends StatefulWidget {
   const _NavigationBar();
 
   @override
+  State<_NavigationBar> createState() => _NavigationBarState();
+}
+
+class _NavigationBarState extends State<_NavigationBar> {
+  @override
   Widget build(BuildContext context) {
+    var selectedIndex = 0;
     return BottomNavigationBar(
+      currentIndex: selectedIndex,
       selectedItemColor: ColorConst.primary,
       type: BottomNavigationBarType.fixed,
+      onTap: (value) {
+        selectedIndex = value;
+        setState(() {
+          switch (selectedIndex) {
+            case 0:
+              break;
+            case 1:
+              context.navigateToPage(const ExploreView());
+              break;
+            case 2:
+              context.navigateToPage(const BookmarkView());
+
+              break;
+            case 3:
+              context.navigateToPage(const ProfileView());
+
+              break;
+            default:
+          }
+        });
+      },
       items: const [
         BottomNavigationBarItem(
-            icon: Icon(Icons.home_outlined),
-            label: StringConstants.bottomnavigationbar_home),
+          icon: Icon(Icons.home_outlined),
+          label: StringConstants.bottomnavigationbar_home,
+        ),
         BottomNavigationBarItem(
           icon: Icon(Icons.navigation_outlined),
           label: StringConstants.bottomnavigationbar_explore,

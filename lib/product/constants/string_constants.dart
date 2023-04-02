@@ -26,6 +26,14 @@ class StringConstants {
   static const String profileWebsite = 'Website';
   static const String profileNews = 'News';
 
+  //Setting
+    static const String settingsPage = 'Settings';
+    static const String settingsPageSecurity = 'Security';
+    static const String settingsPageHelp = 'Help';
+    static const String logout = 'Logout';
+
+
+
   //Add News
   static const String addNewsAppbar = 'Add News';
   static const String addNewsSelectCategory = 'Please select category';

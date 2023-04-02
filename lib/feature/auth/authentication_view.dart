@@ -80,11 +80,7 @@ class _AuthenticationViewState extends ConsumerState<AuthenticationView> {
                     const SizedBox(
                       height: 5,
                     ),
-                    const Text(
-                      StringConstants.loginMsg,
-                    ),
                     LoginView(
-                      showTitle: false,
                       action: AuthAction.signIn,
                       providers: FirebaseUIAuth.providersFor(
                         FirebaseAuth.instance.app,
