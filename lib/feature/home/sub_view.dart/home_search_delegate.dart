@@ -68,7 +68,7 @@ class HomeSearchDelegate extends SearchDelegate<News?> {
               newsItem: result.elementAt(index),
             ),
           ),
-        ); 
+        );
       },
     );
   }

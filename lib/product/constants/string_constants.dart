@@ -27,12 +27,17 @@ class StringConstants {
   static const String profileNews = 'News';
 
   //Setting
-    static const String settingsPage = 'Settings';
-    static const String settingsPageSecurity = 'Security';
-    static const String settingsPageHelp = 'Help';
-    static const String logout = 'Logout';
+  static const String settingsPage = 'Settings';
+  static const String settingsPageSecurity = 'Security';
+  static const String settingsPageHelp = 'Help';
+  static const String logout = 'Logout';
 
-
+  //Edit Profile
+  static const String editUsername = 'Username';
+  static const String editFullname = 'Full Name';
+  static const String editEmailAddress = 'Email Address';
+  static const String editPhone = 'Username';
+  static const String editBio = 'Bio';
 
   //Add News
   static const String addNewsAppbar = 'Add News';
@@ -49,6 +54,4 @@ class StringConstants {
   static const String bottomnavigationbar_explore = 'Explore';
   static const String bottomnavigationbar_bookmark = 'Bookmark';
   static const String bottomnavigationbar_profile = 'Profile';
-
-
 }

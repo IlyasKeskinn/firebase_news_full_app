@@ -1,5 +1,6 @@
 import 'package:firebase_news_full_app/enums/image_constants.dart';
 import 'package:firebase_news_full_app/feature/home/home_provider.dart';
+import 'package:firebase_news_full_app/feature/profile/sub_view/edit_profile/edit_profile_view.dart';
 import 'package:firebase_news_full_app/feature/profile/sub_view/settings/settings_view.dart';
 import 'package:firebase_news_full_app/product/constants/string_constants.dart';
 import 'package:firebase_news_full_app/product/widget/news_widget/news_tile/news_tile.dart';
@@ -48,23 +49,34 @@ class _ProfileViewState extends ConsumerState<ProfileView> {
           Padding(
             padding: context.paddingNormal,
             child: Column(
-              children: [
-                const ProfileImage_FollowsInfo(),
-                const Biography(),
-                const Buttons(),
-                Padding(
-                  padding: context.onlyTopPaddingMedium,
-                  child: Column(
-                    children: [
-                      const HeadingText(value: StringConstants.profileNews),
-                      _emptyLowSizedBox(context),
-                      const _NewsView(),
-                    ],
-                  ),
-                )
+              children: const [
+                ProfileImage_FollowsInfo(),
+                Biography(),
+                Buttons(),
+                ProfileNews()
               ],
             ),
           )
+        ],
+      ),
+    );
+  }
+}
+
+class ProfileNews extends StatelessWidget {
+  const ProfileNews({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: context.onlyTopPaddingMedium,
+      child: Column(
+        children: [
+          const HeadingText(value: StringConstants.profileNews),
+          _emptyLowSizedBox(context),
+          const _NewsView(),
         ],
       ),
     );
@@ -85,7 +97,9 @@ class Buttons extends StatelessWidget {
         children: [
           Expanded(
             child: ElevatedButton(
-              onPressed: () {},
+              onPressed: () {
+                context.navigateToPage(const EditProfileView());
+              },
               child: const Text(StringConstants.profileEdit),
             ),
           ),
@@ -139,10 +153,10 @@ class ProfileImage_FollowsInfo extends StatelessWidget {
       children: [
         DecoratedBox(
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(50),
+            borderRadius: BorderRadius.circular(100),
           ),
           child: ClipRRect(
-            borderRadius: BorderRadius.circular(50),
+            borderRadius: BorderRadius.circular(100),
             child: Image.asset(
               ImageConstants.avatarPhoto.toJpg,
               height: 90,
